@@ -35,7 +35,7 @@ class BaseApp {
 		}
 		
 		cookieName = "sid";
-		cookieDomain = App.config.get("cookie_domain") == null ? "." + App.config.HOST : App.config.get("cookie_domain");
+		cookieDomain = App.config.defined("cookie_domain") ? App.config.get("cookie_domain") : null;
 
 		//populate default headers
 		headers = new Map<String,String>();
@@ -202,7 +202,7 @@ class BaseApp {
 
 	public function setCookie( oldCookie : String ){
 		if( session != null && session.sid != null && session.sid != oldCookie ) {
-			Web.setHeader("Set-Cookie", cookieName+"=" + session.sid + "; path=/;" + " domain=" + cookieDomain + ";" + "Max-Age=2629746;");
+			Web.setHeader("Set-Cookie", cookieName+"=" + session.sid + "; path=/;" + (cookieDomain != null ? ' domain=${cookieDomain};' : '') + "Max-Age=2629746;");
 		}
 	}
 
